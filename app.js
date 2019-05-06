@@ -139,9 +139,26 @@ var placePiece = function(element) {
 	} 
 	if (hasWinner()) {
 		alert(game.winner + " have won!");
-	}
-	if (checkDraws()) {
+	} else if (checkDraws()) {
 		alert("Game has ended in a draw...");
+	}
+}
+//reset board
+var reset = function() {
+	state = {
+		1: '',
+		2: '',
+		3: '',
+		4: '',
+		5: '',
+		6: '',
+		7: '',
+		8: '',
+		9: '',
+	};
+	const squares = document.getElementsByClassName("table");
+	for (let i = 0; i < squares.length; i++) {
+		squares[i].innerHTML = '';
 	}
 }
 
