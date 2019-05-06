@@ -2,7 +2,7 @@
 var game = {
 	player1: "X",
 	player2: "O",
-	currentPlayer: "X",
+	currentPlayer: '',
 	winner: '',
 };
 
@@ -23,22 +23,22 @@ var state = {
 //check column winners
 var checkColumns = function() {
 	if (state[1] === "X" && state[2] === "X" && state[3] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[4] === "X" && state[5] === "X" && state[6] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[7] === "X" && state[8] === "X" && state[9] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[1] === "O" && state[2] === "O" && state[3] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else if (state[4] === "O" && state[5] === "O" && state[6] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else if (state[7] === "O" && state[8] === "O" && state[9] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;	
 	} else {
 		return false;
@@ -47,22 +47,22 @@ var checkColumns = function() {
 //check row winners
 var checkRows = function() {
 	if (state[1] === "X" && state[4] === "X" && state[7] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[2] === "X" && state[5] === "X" && state[8] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[3] === "X" && state[6] === "X" && state[9] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[1] === "O" && state[4] === "O" && state[7] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else if (state[2] === "O" && state[5] === "O" && state[8] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else if (state[3] === "O" && state[6] === "O" && state[9] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else {
 		return false;
@@ -71,16 +71,16 @@ var checkRows = function() {
 //check diagonal winners
 var checkDiagonals = function() {
 	if (state[1] === "X" && state[5] === "X" && state[9] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[3] === "X" && state[5] === "X" && state[7] === "X") {
-		game.winner = "X's";
+		game.winner = "X";
 		return true;
 	} else if (state[3] === "O" && state[5] === "O" && state[7] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else if (state[3] === "O" && state[5] === "O" && state[7] === "O") {
-		game.winner = "O's";
+		game.winner = "O";
 		return true;
 	} else {
 		return false;
@@ -105,12 +105,13 @@ var hasPiece = function(position) {
 }
 // switch currentPlayer
 var switchPlayer = function() {
-	if (game.currentPlayer === game.player1) {
+  if (game.currentPlayer === game.player1) {
 		game.currentPlayer = game.player2;
 	} else {
 		game.currentPlayer = game.player1;
 	}
 }
+switchPlayer(); //initialize
 // check if draw
 var checkDraws = function() {
 	var count = 0;
@@ -125,6 +126,13 @@ var checkDraws = function() {
 		return false;
 	}
 }
+//render piece
+var renderPiece = function(element) {
+	var currentSquare = document.getElementById(element);
+	state[element] = game.currentPlayer;
+	currentSquare.innerHTML = state[element].toString();
+	switchPlayer();
+}
 // place piece
 var placePiece = function(element) {
 	var currentSquare = document.getElementById(element);
@@ -132,13 +140,14 @@ var placePiece = function(element) {
 		alert("Piece already placed...");
 	} else if (!hasPiece(element)) {
 		if (!hasWinner()) {
-			state[element] = game.currentPlayer;
-			currentSquare.innerHTML = game.currentPlayer;
-			switchPlayer();
+			renderPiece(element);
 		}
 	} 
 	if (hasWinner()) {
+		var prev = document.getElementById("prev");
 		alert(game.winner + " have won!");
+		prev.innerHTML =game.winner;
+		game.currentPlayer = game.winner;
 	} else if (checkDraws()) {
 		alert("Game has ended in a draw...");
 	}
