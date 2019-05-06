@@ -155,7 +155,7 @@ var renderPiece = function(element) {
 var placePiece = function(element) {
 	var currentSquare = document.getElementById(element);
   if (hasPiece(element)) {
-		alert("Piece already placed...");
+		return alert("Piece already placed...");
 	} else if (!hasPiece(element)) {
 		if (!hasWinner()) {
 			renderPiece(element);
@@ -166,7 +166,7 @@ var placePiece = function(element) {
 		alert(game.winner + " have won!");
 		prev.innerHTML = game.winner;
 		game.currentPlayer = game.winner;
-		renderWins();
+		return renderWins();
 	} else if (checkDraws()) {
 		alert("Game has ended in a draw...");
 	}
