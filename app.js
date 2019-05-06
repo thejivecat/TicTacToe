@@ -131,11 +131,12 @@ var placePiece = function(element) {
   if (hasPiece(element)) {
 		alert("Piece already placed...");
 	} else if (!hasPiece(element)) {
-		state[element] = game.currentPlayer;
-		currentSquare.innerHTML = game.currentPlayer;
-		switchPlayer();
+		if (!hasWinner()) {
+			state[element] = game.currentPlayer;
+			currentSquare.innerHTML = game.currentPlayer;
+			switchPlayer();
+		}
 	} 
-
 	if (hasWinner()) {
 		alert(game.winner + " have won!");
 	}
