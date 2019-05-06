@@ -113,14 +113,16 @@ var switchPlayer = function() {
 }
 // check if draw
 var checkDraws = function() {
-  for (let square in state) {
-		if (!hasWinner) {
-			if (state[square] !== '') {
-				return true;
-			} else {
-				return false;
-			}
+	var count = 0;
+  for (let square in state) { 
+		if (state[square] === "X" || state[square] === "O") {
+			count++;
 		}
+	}
+	if (count === 9) {
+		return true;
+	} else {
+		return false;
 	}
 }
 // place piece
@@ -133,25 +135,16 @@ var placePiece = function(element) {
 		currentSquare.innerHTML = game.currentPlayer;
 		switchPlayer();
 	} 
+
 	if (hasWinner()) {
 		alert(game.winner + " have won!");
-	} 
+	}
 	if (checkDraws()) {
 		alert("Game has ended in a draw...");
-	} 
+	}
 }
 
 
-
-// var sq1 = document.getElementById("sq1");
-// var sq2 = document.getElementById("sq2");
-// var sq3 = document.getElementById("sq3");
-// var sq4 = document.getElementById("sq4");
-// var sq5 = document.getElementById("sq5");
-// var sq6 = document.getElementById("sq6");
-// var sq7 = document.getElementById("sq7");
-// var sq8 = document.getElementById("sq8");
-// var sq9 = document.getElementById("sq9");
 
 
 
