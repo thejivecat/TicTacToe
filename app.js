@@ -17,7 +17,7 @@ var state = {
 	6: '',
 	7: '',
 	8: '',
-	9: '',
+	9: ''
 };
 
 //FUNCTIONS
@@ -25,29 +25,17 @@ var state = {
 //check column winners
 var checkColumns = function() {
 	if (state[1] === "X" && state[2] === "X" && state[3] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[4] === "X" && state[5] === "X" && state[6] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[7] === "X" && state[8] === "X" && state[9] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[1] === "O" && state[2] === "O" && state[3] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else if (state[4] === "O" && state[5] === "O" && state[6] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else if (state[7] === "O" && state[8] === "O" && state[9] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;	
+		return "O";	
 	} else {
 		return false;
 	}
@@ -55,29 +43,17 @@ var checkColumns = function() {
 //check row winners
 var checkRows = function() {
 	if (state[1] === "X" && state[4] === "X" && state[7] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[2] === "X" && state[5] === "X" && state[8] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[3] === "X" && state[6] === "X" && state[9] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[1] === "O" && state[4] === "O" && state[7] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else if (state[2] === "O" && state[5] === "O" && state[8] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else if (state[3] === "O" && state[6] === "O" && state[9] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else {
 		return false;
 	}
@@ -85,31 +61,27 @@ var checkRows = function() {
 //check diagonal winners
 var checkDiagonals = function() {
 	if (state[1] === "X" && state[5] === "X" && state[9] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[3] === "X" && state[5] === "X" && state[7] === "X") {
-		game.winner = "X";
-		game.winsX++;
-		return true;
+		return "X";
 	} else if (state[3] === "O" && state[5] === "O" && state[7] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else if (state[3] === "O" && state[5] === "O" && state[7] === "O") {
-		game.winner = "O";
-		game.winsO++;
-		return true;
+		return "O";
 	} else {
 		return false;
 	}
 }
 //check if any winners
 var hasWinner = function() {
-	if (checkColumns() || checkRows() || checkDiagonals()) {
+	if (checkColumns() === "X" || checkRows() === "X" || checkDiagonals() === "X") {
+		game.winner= "X";
+		game.winsX++;
 		return true;
-	} else {
-		return false;
+	} else if (checkColumns() === "O" || checkRows() === "O" || checkDiagonals() === "O") {
+		game.winner= "O";
+		game.winsO++;
+		return true;
 	}
 } 
 
@@ -151,31 +123,35 @@ var renderPiece = function(element) {
 	currentSquare.innerHTML = state[element].toString();
 	switchPlayer();
 }
-// place piece
-var placePiece = function(element) {
-	var currentSquare = document.getElementById(element);
-  if (hasPiece(element)) {
-		return alert("Piece already placed...");
-	} else if (!hasPiece(element)) {
-		if (!hasWinner()) {
-			renderPiece(element);
-		}
-	} 
-	if (hasWinner()) {
-		var prev = document.getElementById("prev");
-		alert(game.winner + " have won!");
-		prev.innerHTML = game.winner;
-		game.currentPlayer = game.winner;
-		return renderWins();
-	} else if (checkDraws()) {
-		alert("Game has ended in a draw...");
-	}
+var updatePrev = function() {
+	var prev = document.getElementById("prev");
+	alert(game.winner + " have won!");
+	prev.innerHTML = game.winner;
+	game.currentPlayer = game.winner;
 }
 var renderWins = function() {
 	var pX = document.getElementById("pX");
 	var pO = document.getElementById("pO");
 	pX.innerHTML = game.winsX;
 	pO.innerHTML = game.winsO;
+}
+// place piece
+var playTurn = function(element) {
+	var currentSquare = document.getElementById(element);
+  if (hasPiece(element)) {
+		return alert("Piece already placed...");
+	} else if (!hasPiece(element)) {
+		if (!hasWinner() ) {
+			renderPiece(element);
+		}
+	} 
+	if (hasWinner()) {
+		updatePrev();
+		renderWins();
+		reset();
+	} else if (checkDraws()) {
+		alert("Game has ended in a draw...");
+	} 
 }
 //reset board
 var reset = function() {
